@@ -1,6 +1,7 @@
 #include <API.h>
 #include "ports.h"
-#include "drive.h"
+#include "basicMovement.h"
+#include "advancedMovement.h"
 #include "sensors.h"
 #include "controller.h"
 
@@ -28,6 +29,12 @@ void operatorControl() {
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
 			printf("Encoder step: %d.\n", steps);
 			delay(200);
+		}
+	} else if (mode == 2) {
+		while(1) {
+			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
+	      moveSteps(500, 80);
+    	}
 		}
 	}
 }
