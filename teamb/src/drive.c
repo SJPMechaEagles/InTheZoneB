@@ -1,4 +1,6 @@
 #include "drive.h"
+#include "ports.h"
+
 void setSpeedLeft(int speedLeft){
   motorSet(MOTOR_FL, speedLeft);
   motorSet(MOTOR_BL, speedLeft);

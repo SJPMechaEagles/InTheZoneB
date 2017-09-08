@@ -11,6 +11,7 @@
  */
 
 #include "main.h"
+#include "ports.h"
 
 /*
  * Runs pre-initialization code. This function will be started in kernel mode one time while the
@@ -37,4 +38,9 @@ void initializeIO() {
  * can be implemented in this task if desired.
  */
 void initialize() {
+  // Check count to ensure all IMEs are plugged in!
+    int IMECount = imeInitializeAll();
+    if(IMECount != NUMBER_OF_IME){
+        // something has gone wrong
+    }
 }
