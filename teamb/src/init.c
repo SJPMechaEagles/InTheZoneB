@@ -43,4 +43,5 @@ void initialize() {
     if(IMECount != NUMBER_OF_IME){
         // something has gone wrong
     }
+    gyro = gyroInit(GYRO_PORT, 0);
 }

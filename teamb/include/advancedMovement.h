@@ -4,3 +4,4 @@
 #include "sensors.h"
 
 void moveSteps(int steps, int speed);
+void arcadeControl(int stickX, int stickY);

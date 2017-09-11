@@ -7,20 +7,13 @@
 
 
 void operatorControl() {
-	int mode = 1;
+	int mode = 3;
 	if (mode == 0) {
 		while (1) {
-			int stickx = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_X);
-			int sticky = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_Y);
-
-			int left = sticky + stickx;
-			int right = sticky - stickx;
-
-			setSpeedRight(right);
-			setSpeedLeft(left);
-
+			int stickX = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_X);
+			int stickY = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_Y);
+			arcadeControl(stickX, stickY);
 			delay(20);
-			//y=2^ax a=0.55
 		}
 	} else if (mode == 1) {
 		printf("Start monitoring motor encoders.");
@@ -31,10 +24,16 @@ void operatorControl() {
 			delay(200);
 		}
 	} else if (mode == 2) {
+		resetEncoderSteps(IME_LEFT_MOTOR);
 		while(1) {
 			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
-	      moveSteps(500, 80);
+	      moveSteps(1000, 80);
     	}
+		}
+	} else if (mode == 3) {
+		while (1) {
+			int heading = getGyroscopeValue(gyro);
+			printf("Gyroscope heading: %d.\n", heading);
 		}
 	}
 }

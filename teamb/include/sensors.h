@@ -5,5 +5,8 @@
 
 int getEncoderSteps(int side);
 void resetEncoderSteps(int side);
+int getGyroscopeValue(Gyro gyro);
+void resetGyroscopeValue(Gyro gyro);
+
 
 #endif
