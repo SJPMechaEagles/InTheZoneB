@@ -6,8 +6,9 @@
 #include "controller.h"
 
 
-void operatorControl() {
-	int mode = 3;
+void operatorControl()
+{
+	int mode = 1;
 	if (mode == 0) {
 		while (1) {
 			int stickX = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_X);
@@ -18,7 +19,8 @@ void operatorControl() {
 	} else if (mode == 1) {
 		printf("Start monitoring motor encoders.");
 		int steps = 0;
-		while (1) {
+		while (1)
+		{
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
 			printf("Encoder step: %d.\n", steps);
 			delay(200);
@@ -31,9 +33,13 @@ void operatorControl() {
     	}
 		}
 	} else if (mode == 3) {
+		int heading;
+
+		printf("Starting gyroscope.");
 		while (1) {
-			int heading = getGyroscopeValue(gyro);
+			heading = getGyroscopeValue(gyro);
 			printf("Gyroscope heading: %d.\n", heading);
+			delay(200);
 		}
 	}
 }
