@@ -8,7 +8,7 @@
 
 void operatorControl()
 {
-	int mode = 1;
+	int mode = 3;
 	if (mode == 0) {
 		while (1) {
 			int stickX = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_X);
@@ -26,13 +26,6 @@ void operatorControl()
 			delay(200);
 		}
 	} else if (mode == 2) {
-		resetEncoderSteps(IME_LEFT_MOTOR);
-		while(1) {
-			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
-	      moveSteps(1000, 80);
-    	}
-		}
-	} else if (mode == 3) {
 		int heading;
 
 		printf("Starting gyroscope.");
@@ -40,6 +33,11 @@ void operatorControl()
 			heading = getGyroscopeValue(gyro);
 			printf("Gyroscope heading: %d.\n", heading);
 			delay(200);
+		}
+	} else if(mode == 3) {
+		while (1) {
+			drive(MODE_TANK_DRIVE);
+			delay(60);
 		}
 	}
 }

@@ -15,14 +15,12 @@ void moveSteps(int steps, int speed) {
 
 void arcadeControl(int stickX, int stickY) {
   //
-  if (abs(stickX) > JOYSTICK_THRESHOLD || abs(stickY) > JOYSTICK_THRESHOLD){
+  if (abs(stickX) + abs(stickY) > JOYSTICK_THRESHOLD){
     int left = stickY + stickX;
     int right = stickY - stickX;
 
     setSpeedLeft(left);
     setSpeedRight(right);
-  } else {
-    setMotors(0, 0);
   }
 }
 
