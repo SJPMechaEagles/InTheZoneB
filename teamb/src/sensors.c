@@ -21,3 +21,8 @@ int getGyroscopeValue(Gyro gyro) {
 void resetGyroscopeValue(Gyro gyro) {
   gyroReset(gyro);
 }
+
+unsigned int get_potentiometer_position(const unsigned char port) {
+  unsigned int potValue = analogRead(port);
+  return (250.0 / 4096.0) * potValue;
+}

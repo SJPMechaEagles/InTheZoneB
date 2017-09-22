@@ -7,6 +7,6 @@ int getEncoderSteps(int side);
 void resetEncoderSteps(int side);
 int getGyroscopeValue(Gyro gyro);
 void resetGyroscopeValue(Gyro gyro);
-
+unsigned int get_potentiometer_position(const unsigned char port);
 
 #endif
