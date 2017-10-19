@@ -39,9 +39,9 @@ void initializeIO() {
  */
 void initialize() {
   // Check count to ensure all IMEs are plugged in!
-    int IMECount = imeInitializeAll();
-    if(IMECount != NUMBER_OF_IME){
+    //int IMECount = imeInitializeAll();
+    //if(IMECount != NUMBER_OF_IME){
         // something has gone wrong
-    }
+    //}
     gyro = gyroInit(GYRO_PORT, 0);
 }

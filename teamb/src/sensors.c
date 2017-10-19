@@ -25,3 +25,7 @@ void resetGyroscopeValue(Gyro gyro)
 {
   gyroReset(gyro);
 }
+
+int getRawPot(int port) {
+  return analogRead(port);
+}

@@ -6,5 +6,6 @@
 void setSpeedLeft(int speedLeft);
 void setSpeedRight(int speedRight);
 void setMotors(int speedLeft, int speedRight);
+void mobileLift(int speedLeft, int speedRight);
 
 #endif

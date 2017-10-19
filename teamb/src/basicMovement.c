@@ -14,3 +14,8 @@ void setMotors(int speedLeft, int speedRight){
   setSpeedLeft(speedLeft);
   setSpeedRight(speedRight);
 }
+
+void mobileLift(int speedLeft, int speedRight) {
+  motorSet(MOTOR_MLL, speedLeft);
+  motorSet(MOTOR_MLR, speedRight);
+}

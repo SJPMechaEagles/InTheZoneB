@@ -12,4 +12,5 @@ void moveSteps(int steps, int speed);
 void arcadeControl(int stickX, int stickY);
 void tankDrive(int leftSpeed, int rightSpeed);
 void drive(int mode);
+void mobileGoalLift();
 bool greaterThanThreshold(int joyX, int joyY);

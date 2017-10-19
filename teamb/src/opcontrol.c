@@ -27,7 +27,7 @@ void operatorControl()
 		}
 	} else if (mode == 2) {
 		int heading;
-
+		delay(1000);
 		printf("Starting gyroscope.");
 		while (1) {
 			heading = getGyroscopeValue(gyro);
@@ -37,7 +37,10 @@ void operatorControl()
 	} else if(mode == 3) {
 		while (1) {
 			drive(MODE_TANK_DRIVE);
-			delay(60);
+			mobileGoalLift();
+			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
+			delay(200);
+
 		}
 	}
 }

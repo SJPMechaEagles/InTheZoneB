@@ -7,6 +7,7 @@ int getEncoderSteps(int side);
 void resetEncoderSteps(int side);
 int getGyroscopeValue(Gyro gyro);
 void resetGyroscopeValue(Gyro gyro);
+int getRawPot(int port);
 
 
 #endif

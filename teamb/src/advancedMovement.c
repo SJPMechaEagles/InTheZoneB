@@ -41,10 +41,32 @@ void drive(int mode) {
   } else if (mode == MODE_ARCADE_DRIVE) {
     arcadeControl(stickRX, stickRY);
   }
+
+
+}
+
+void mobileGoalLift() {
+  if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
+    while (getRawPot(POTENTIOMETER_PORT) <= 1900) {
+      mobileLift(50, 50);
+      if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+        break;
+      }
+    }
+  } else if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
+    while (getRawPot(POTENTIOMETER_PORT) >= 1200) {
+      mobileLift(-50, -50);
+      if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+        break;
+      }
+    }
+  } else {
+    mobileLift(0,0);
+  }
 }
 
 bool greaterThanThreshold(int joyX, int joyY) {
-  printf("%d\n", abs(joyX));
+  //printf("OOK. OOK. OOK? OOK! OOK! OOK? System.OOK.println(Oof); import java.OOK.RBDeathSound; #include OOK.h;  %d\n", abs(joyX));
   if (abs(joyX) >= THRESHOLD || abs(joyY) >= THRESHOLD) {
     return true;
   } else {
