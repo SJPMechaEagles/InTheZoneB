@@ -9,5 +9,4 @@ int getGyroscopeValue(Gyro gyro);
 void resetGyroscopeValue(Gyro gyro);
 int getRawPot(int port);
 
-
 #endif
