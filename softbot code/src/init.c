@@ -11,6 +11,7 @@
  */
 
 #include "main.h"
+#include "sensors.h"
 
 /*
  * Runs pre-initialization code. This function will be started in kernel mode one time while the
@@ -37,4 +38,6 @@ void initializeIO() {
  * can be implemented in this task if desired.
  */
 void initialize() {
+  gyro = gyroInit(GYRO_PORT, 0);
+  //initUltraSonic();
 }

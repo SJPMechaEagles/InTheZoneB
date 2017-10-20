@@ -5,6 +5,13 @@
 #include "sensors.h"
 #include "controller.h"
 
+void autonomous();
+
+void autonomousControl(unsigned char joystick, unsigned char buttonGroup, unsigned char button) {
+  if(joystickGetDigital(joystick, buttonGroup, button)) {
+    autonomous();
+  }
+}
 
 void operatorControl() {
 	while (1) {
@@ -14,6 +21,9 @@ void operatorControl() {
 		arcadeControl(stickY, stickX);
 		lifterControl();
 		clawControl();
-		delay(20);
+		autonomousControl(MAIN_JOYSTICK, 8, JOY_RIGHT);
+		int gyroValue = getGyroscopeValue(gyro);
+		printf("%d\n", gyroValue);
+		delay(60);
 	}
 }

@@ -1,6 +1,7 @@
 #include "advancedMovement.h"
 
 const int THRESHOLD = 15;
+static TaskHandle lifterLoop;
 
 void moveSteps(int steps, int speed){
   setMotors(speed, speed);
@@ -45,24 +46,47 @@ void drive(int mode) {
 
 }
 
-void mobileGoalLift() {
+void mobileGoalLifterLoop(void * parameter) {
+  while (1) {
+    if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
+      while (getRawPot(POTENTIOMETER_PORT) <= 1500) {
+        mobileLift(50, 50);
+        if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+          break;
+        }
+      }
+    } else if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
+
+      while (getRawPot(POTENTIOMETER_PORT) >= 2500) {
+        mobileLift(-50, -50);
+        if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+          break;
+        }
+      }
+    } else {
+      mobileLift(0, 0);
+    }
+    delay(17);
+  }
+}
+
+// Test method in case potentiometer messes up
+void mobileGoalLiftTest() {
   if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
-    while (getRawPot(POTENTIOMETER_PORT) <= 1900) {
-      mobileLift(50, 50);
-      if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
-        break;
-      }
-    }
+    mobileLift(50, 50);
   } else if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
-    while (getRawPot(POTENTIOMETER_PORT) >= 1200) {
-      mobileLift(-50, -50);
-      if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
-        break;
-      }
-    }
+    mobileLift(-50,-50);
   } else {
     mobileLift(0,0);
   }
+}
+
+void startLifterLoop() {
+  lifterLoop = taskCreate(mobileGoalLifterLoop, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+}
+
+void stopLifterLoop() {
+  taskDelete(lifterLoop);
 }
 
 bool greaterThanThreshold(int joyX, int joyY) {

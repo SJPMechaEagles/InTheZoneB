@@ -17,8 +17,9 @@
 #define IME_RIGHT_MOTOR 1
 #define NUMBER_OF_IME 2
 
-// Analog port number gyro is plugged into
-#define GYRO_PORT 1
+#define SONAR_PORT_ORANGE 7
+#define SONAR_PORT_YELLOW 6
+#define GYRO_PORT 7
 Gyro gyro;
 
 #endif

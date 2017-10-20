@@ -6,7 +6,8 @@
 int getEncoderSteps(int side);
 void resetEncoderSteps(int side);
 int getGyroscopeValue(Gyro gyro);
-void resetGyroscopeValue(Gyro gyro);
+void resetGyroscopeValue();
 
-
+int getUltraSonicValue();
+void initUltraSonic();
 #endif

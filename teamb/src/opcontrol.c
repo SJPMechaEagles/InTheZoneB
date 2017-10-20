@@ -35,12 +35,19 @@ void operatorControl()
 			delay(200);
 		}
 	} else if(mode == 3) {
+		startLifterLoop();
 		while (1) {
 			drive(MODE_TANK_DRIVE);
-			mobileGoalLift();
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			delay(200);
-
+		}
+		// Test mode
+	} else if (mode == 4) {
+		while(1)
+		{
+			mobileGoalLiftTest();
+			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
+			delay(200);
 		}
 	}
 }

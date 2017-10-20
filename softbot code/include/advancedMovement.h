@@ -11,4 +11,6 @@ void moveSteps(int steps, int speed);
 void arcadeControl(int stickX, int stickY);
 void clawControl();
 void lifterControl();
+void moveUntilObstacle();
+void turnGyro(int turnDegrees, int power, Gyro gyro);
 #endif
