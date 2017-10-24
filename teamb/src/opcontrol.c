@@ -39,8 +39,10 @@ void operatorControl()
 		while (1) {
 			drive(MODE_TANK_DRIVE);
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
+			printf("Gyroscope heading: %d.\n", getGyroscopeValue(gyro));
 			delay(200);
 		}
+		stopLifterLoop();
 		// Test mode
 	} else if (mode == 4) {
 		while(1)

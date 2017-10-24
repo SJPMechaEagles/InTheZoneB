@@ -42,23 +42,20 @@ void drive(int mode) {
   } else if (mode == MODE_ARCADE_DRIVE) {
     arcadeControl(stickRX, stickRY);
   }
-
-
 }
 
 void mobileGoalLifterLoop(void * parameter) {
   while (1) {
     if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
-      while (getRawPot(POTENTIOMETER_PORT) <= 1500) {
-        mobileLift(50, 50);
+      while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
+        mobileLift(127, 127);
         if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
           break;
         }
       }
     } else if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
-
-      while (getRawPot(POTENTIOMETER_PORT) >= 2500) {
-        mobileLift(-50, -50);
+      while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
+        mobileLift(-127, -127);
         if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
           break;
         }
@@ -66,16 +63,16 @@ void mobileGoalLifterLoop(void * parameter) {
     } else {
       mobileLift(0, 0);
     }
-    delay(17);
+    delay(20);
   }
 }
 
 // Test method in case potentiometer messes up
 void mobileGoalLiftTest() {
   if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
-    mobileLift(50, 50);
+    mobileLift(100, 100);
   } else if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
-    mobileLift(-50,-50);
+    mobileLift(-100,-100);
   } else {
     mobileLift(0,0);
   }
