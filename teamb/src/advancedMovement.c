@@ -94,3 +94,25 @@ bool greaterThanThreshold(int joyX, int joyY) {
     return false;
   }
 }
+
+void gyroTurnLeft(int degrees, Gyro gyro) {
+  int initial = getGyroscopeValue(gyro);
+  while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
+    setMotors(-80, 80);
+  }
+  setMotors(0, 0);
+}
+
+void gyroTurnRight(int degrees, Gyro gyro) {
+  int initial = getGyroscopeValue(gyro);
+  while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
+    setMotors(80, -80);
+  }
+  setMotors(0, 0);
+}
+
+void autonomousTest(Gyro gyro) {
+    gyroTurnLeft(900, gyro);
+    gyroTurnRight(900, gyro);
+    moveSteps(6665,50);
+}

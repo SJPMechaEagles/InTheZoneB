@@ -38,18 +38,14 @@ void operatorControl()
 		startLifterLoop();
 		while (1) {
 			drive(MODE_TANK_DRIVE);
+			if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
+				autonomousTest(gyro);
+			}
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			printf("Gyroscope heading: %d.\n", getGyroscopeValue(gyro));
 			delay(200);
 		}
 		stopLifterLoop();
 		// Test mode
-	} else if (mode == 4) {
-		while(1)
-		{
-			mobileGoalLiftTest();
-			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
-			delay(200);
-		}
 	}
 }
