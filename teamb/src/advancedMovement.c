@@ -1,7 +1,7 @@
 #include "advancedMovement.h"
 
-const int THRESHOLD = 15;
 static TaskHandle lifterLoop;
+int turnSpeed = 0;
 
 void moveSteps(int steps, int speed){
   setMotors(speed, speed);
@@ -27,38 +27,42 @@ void tankDrive(int speedLeft, int speedRight) {
 }
 
 void drive(int mode) {
-  int stickLX = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_LEFT_X);
-  int stickLY = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_LEFT_Y);
-  int stickRX = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_X);
-  int stickRY = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_Y);
-
-  if(!(greaterThanThreshold(stickLX, stickLY) || greaterThanThreshold(stickRX, stickRY))) {
+  struct controller_values controller_values = getControllerValues();
+  if(drivingThreshold() == false) {
     setMotors(0, 0);
     return;
   }
 
   if (mode == MODE_TANK_DRIVE) {
-    tankDrive(stickLY, stickRY);
+    if ((getRawPot(POTENTIOMETER_PORT) >= 2300) && ((turningRight() == true) || (turningLeft() == true))) {
+      if (turnSpeed%2 == 0){
+          tankDrive(controller_values.stickLY/2, controller_values.stickRY/2);
+      } else if (turnSpeed%2 == 1) {
+          tankDrive(controller_values.stickLY,controller_values.stickRY);
+      }
+    } else if ((getRawPot(POTENTIOMETER_PORT) <= 2300) && ((turningRight() == true) || (turningLeft() == true))) {
+      if (turnSpeed%2 == 0){
+          tankDrive(controller_values.stickLY/4, controller_values.stickRY/4);
+      } else if (turnSpeed%2 == 1) {
+          tankDrive(controller_values.stickLY,controller_values.stickRY);
+      }
+    } else {
+      tankDrive(controller_values.stickLY,controller_values.stickRY);
+    }
   } else if (mode == MODE_ARCADE_DRIVE) {
-    arcadeControl(stickRX, stickRY);
+    arcadeControl(controller_values.stickRX, controller_values.stickRY);
   }
 }
 
 void mobileGoalLifterLoop(void * parameter) {
   while (1) {
-    if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
+    if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_UP)) {
       while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
         mobileLift(127, 127);
-        if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
-          break;
-        }
       }
-    } else if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
+    } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
       while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
         mobileLift(-127, -127);
-        if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
-          break;
-        }
       }
     } else {
       mobileLift(0, 0);
@@ -115,4 +119,10 @@ void autonomousTest(Gyro gyro) {
     gyroTurnLeft(900, gyro);
     gyroTurnRight(900, gyro);
     moveSteps(6665,50);
+}
+
+void changeTurnSpeed() {
+  if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_UP)) {
+    turnSpeed++;
+  }
 }

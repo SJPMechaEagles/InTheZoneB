@@ -8,44 +8,25 @@
 
 void operatorControl()
 {
-	int mode = 3;
+	int mode = 1;
+
 	if (mode == 0) {
 		while (1) {
-			int stickX = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_X);
-			int stickY = joystickGetAnalog(MAIN_JOYSTICK, JOYSTICK_RIGHT_Y);
-			arcadeControl(stickX, stickY);
+			drive(MODE_ARCADE_DRIVE);
 			delay(20);
 		}
-	} else if (mode == 1) {
-		printf("Start monitoring motor encoders.");
-		int steps = 0;
-		while (1)
-		{
-			steps = getEncoderSteps(IME_LEFT_MOTOR);
-			printf("Encoder step: %d.\n", steps);
-			delay(200);
-		}
-	} else if (mode == 2) {
-		int heading;
-		delay(1000);
-		printf("Starting gyroscope.");
-		while (1) {
-			heading = getGyroscopeValue(gyro);
-			printf("Gyroscope heading: %d.\n", heading);
-			delay(200);
-		}
-	} else if(mode == 3) {
+	} else if(mode == 1) {
 		startLifterLoop();
 		while (1) {
 			drive(MODE_TANK_DRIVE);
-			if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
-				autonomousTest(gyro);
-			}
+			changeTurnSpeed();
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			printf("Gyroscope heading: %d.\n", getGyroscopeValue(gyro));
+			int steps = 0;
+			steps = getEncoderSteps(IME_LEFT_MOTOR);
+			printf("Encoder step: %d.\n", steps);
 			delay(200);
+			}
 		}
-		stopLifterLoop();
-		// Test mode
-	}
+	stopLifterLoop();
 }
