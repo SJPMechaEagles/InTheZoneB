@@ -28,8 +28,6 @@
  * so, the robot will await a switch to another mode or disable/enable cycle.
  */
 void autonomous() {
-  gyroTurnLeft(90, gyro);
-  gyroTurnRight(90, gyro);
   //OOK. OOK?
   moveSteps(6665,50);
 }

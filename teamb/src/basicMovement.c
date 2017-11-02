@@ -36,7 +36,8 @@ struct controller_values getControllerValues() {
 
 bool turningRight(){
   struct controller_values controller_values = getControllerValues();
-  if(abs(controller_values.stickLY) >= THRESHOLD && abs(controller_values.stickRY) <= THRESHOLD) {
+  if((controller_values.stickLY >= THRESHOLD && abs(controller_values.stickRY) <= THRESHOLD)
+    || (controller_values.stickRY >= THRESHOLD && controller_values.stickLY <= -THRESHOLD)) {
     return true;
   } else {
     return false;
@@ -45,15 +46,8 @@ bool turningRight(){
 
 bool turningLeft(){
   struct controller_values controller_values = getControllerValues();
-  if(abs(controller_values.stickRY) >= THRESHOLD && abs(controller_values.stickLY) <= THRESHOLD){
-    return true;
-  } else {
-    return false;
-  }
-}
-bool turningLeftAndRight(){
-  struct controller_values controller_values = getControllerValues();
-  if(abs(controller_values.stickRY) >= THRESHOLD && abs(controller_values.stickLY) >= THRESHOLD){
+  if((controller_values.stickRY >= THRESHOLD && abs(controller_values.stickLY) <= THRESHOLD)
+    || (controller_values.stickLY >= THRESHOLD && controller_values.stickRY <= -THRESHOLD)){
     return true;
   } else {
     return false;

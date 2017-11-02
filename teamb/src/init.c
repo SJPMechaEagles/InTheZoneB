@@ -37,6 +37,7 @@ void initializeIO() {
  * will not start. An autonomous mode selection menu like the pre_auton() in other environments
  * can be implemented in this task if desired.
  */
+Gyro gyro;
 void initialize() {
   // Check count to ensure all IMEs are plugged in!
     //int IMECount = imeInitializeAll();
@@ -44,4 +45,5 @@ void initialize() {
         // something has gone wrong
     //}
     gyro = gyroInit(GYRO_PORT, 0);
+    wait(2000);
 }

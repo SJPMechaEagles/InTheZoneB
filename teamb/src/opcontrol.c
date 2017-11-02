@@ -5,6 +5,7 @@
 #include "sensors.h"
 #include "controller.h"
 
+extern Gyro gyro;
 
 void operatorControl()
 {
@@ -18,14 +19,14 @@ void operatorControl()
 	} else if(mode == 1) {
 		startLifterLoop();
 		while (1) {
-			drive(MODE_TANK_DRIVE);
+			drive(MODE_ARCADE_DRIVE);
 			changeTurnSpeed();
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
-			printf("Gyroscope heading: %d.\n", getGyroscopeValue(gyro));
+			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
 			int steps = 0;
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
 			printf("Encoder step: %d.\n", steps);
-			delay(200);
+			delay(100);
 			}
 		}
 	stopLifterLoop();

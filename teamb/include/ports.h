@@ -15,8 +15,7 @@
 #define NUMBER_OF_IME 6
 
 // Analog port number gyro is plugged into
-#define GYRO_PORT 3
-Gyro gyro;
+#define GYRO_PORT 1
 #define POTENTIOMETER_PORT 2
 
 #endif

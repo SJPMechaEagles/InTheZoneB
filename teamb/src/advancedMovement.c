@@ -50,7 +50,7 @@ void drive(int mode) {
       tankDrive(controller_values.stickLY,controller_values.stickRY);
     }
   } else if (mode == MODE_ARCADE_DRIVE) {
-    arcadeControl(controller_values.stickRX, controller_values.stickRY);
+    arcadeControl(controller_values.stickRY, controller_values.stickRX);
   }
 }
 
