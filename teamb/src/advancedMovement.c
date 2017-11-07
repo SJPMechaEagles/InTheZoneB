@@ -1,8 +1,8 @@
 #include "advancedMovement.h"
 
 static TaskHandle lifterLoop;
-static int turnSpeed = 0;
-static double turningMultiplier = 0.25;
+static int turnSpeedToggle = 0;
+static double turningMultiplier = 0.333;
 static bool lifterIsRaised = true;
 
 void moveSteps(int steps, int speed){
@@ -37,7 +37,7 @@ void drive(int mode) {
   }
 
   if (mode == MODE_TANK_DRIVE) {
-    if ( turnSpeed%2 == 1 && turning(controller.stickLY, controller.stickRY) ) {
+    if ( turnSpeedToggle%2 == 1 && turning(controller.stickLY, controller.stickRY) ) {
         //slow down turning based on the state of the lifter
         //if it is enabled.
         tankDrive(controller.stickLY*turningMultiplier,
@@ -57,14 +57,14 @@ void mobileGoalLifterLoop(void * parameter) {
         mobileLift(127, 127);
       }
       lifterIsRaised = true;
-      turningMultiplier = 0.5;
+      turningMultiplier = 0.667;
     } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
       while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
         mobileLift(-127, -127);
       }
       lifterIsRaised = false;
       //turn solwer when lifter down
-      turningMultiplier = 0.25;
+      turningMultiplier = 0.333;
     } else {
       mobileLift(0, 0);
     }
@@ -120,6 +120,7 @@ void autonomousTest(Gyro gyro) {
 
 void changeTurnSpeed() {
   if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_UP)) {
-    turnSpeed++;
+    turnSpeedToggle++;
+    wait(150);
   }
 }
