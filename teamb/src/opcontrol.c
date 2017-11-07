@@ -19,7 +19,9 @@ void operatorControl()
 	} else if(mode == 1) {
 		startLifterLoop();
 		while (1) {
-			drive(MODE_ARCADE_DRIVE);
+			drive(MODE_TANK_DRIVE);
+			//turn 90 degs if button 8 L/R is pressed
+			autonomousTest(gyro);
 			changeTurnSpeed();
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			printf("Gyroscope heading: %d.\n", gyroGet(gyro));

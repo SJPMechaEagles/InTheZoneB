@@ -1,7 +1,9 @@
 #include "advancedMovement.h"
 
 static TaskHandle lifterLoop;
-int turnSpeed = 0;
+static int turnSpeed = 0;
+static double turningMultiplier = 0.25;
+static bool lifterIsRaised = true;
 
 void moveSteps(int steps, int speed){
   setMotors(speed, speed);
@@ -27,30 +29,24 @@ void tankDrive(int speedLeft, int speedRight) {
 }
 
 void drive(int mode) {
-  struct controller_values controller_values = getControllerValues();
-  if(drivingThreshold() == false) {
+  struct controller_values controller = getControllerValues();
+  if( !greaterThanThreshold(controller.stickLY, controller.stickLX) &&
+    !greaterThanThreshold(controller.stickRY, controller.stickRX) ) {
     setMotors(0, 0);
     return;
   }
 
   if (mode == MODE_TANK_DRIVE) {
-    if ((getRawPot(POTENTIOMETER_PORT) >= 2300) && ((turningRight() == true) || (turningLeft() == true))) {
-      if (turnSpeed%2 == 0){
-          tankDrive(controller_values.stickLY/2, controller_values.stickRY/2);
-      } else if (turnSpeed%2 == 1) {
-          tankDrive(controller_values.stickLY,controller_values.stickRY);
-      }
-    } else if ((getRawPot(POTENTIOMETER_PORT) <= 2300) && ((turningRight() == true) || (turningLeft() == true))) {
-      if (turnSpeed%2 == 0){
-          tankDrive(controller_values.stickLY/4, controller_values.stickRY/4);
-      } else if (turnSpeed%2 == 1) {
-          tankDrive(controller_values.stickLY,controller_values.stickRY);
-      }
+    if ( turnSpeed%2 == 1 && turning(controller.stickLY, controller.stickRY) ) {
+        //slow down turning based on the state of the lifter
+        //if it is enabled.
+        tankDrive(controller.stickLY*turningMultiplier,
+          controller.stickRY*turningMultiplier);
     } else {
-      tankDrive(controller_values.stickLY,controller_values.stickRY);
+      tankDrive(controller.stickLY,controller.stickRY);
     }
   } else if (mode == MODE_ARCADE_DRIVE) {
-    arcadeControl(controller_values.stickRY, controller_values.stickRX);
+    arcadeControl(controller.stickRY, controller.stickRX);
   }
 }
 
@@ -60,10 +56,15 @@ void mobileGoalLifterLoop(void * parameter) {
       while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
         mobileLift(127, 127);
       }
+      lifterIsRaised = true;
+      turningMultiplier = 0.5;
     } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
       while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
         mobileLift(-127, -127);
       }
+      lifterIsRaised = false;
+      //turn solwer when lifter down
+      turningMultiplier = 0.25;
     } else {
       mobileLift(0, 0);
     }
@@ -90,15 +91,6 @@ void stopLifterLoop() {
   taskDelete(lifterLoop);
 }
 
-bool greaterThanThreshold(int joyX, int joyY) {
-  //printf("OOK. OOK. OOK? OOK! OOK! OOK? System.OOK.println(Oof); import java.OOK.RBDeathSound; #include OOK.h;  %d\n", abs(joyX));
-  if (abs(joyX) >= THRESHOLD || abs(joyY) >= THRESHOLD) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 void gyroTurnLeft(int degrees, Gyro gyro) {
   int initial = getGyroscopeValue(gyro);
   while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
@@ -116,9 +108,14 @@ void gyroTurnRight(int degrees, Gyro gyro) {
 }
 
 void autonomousTest(Gyro gyro) {
+  if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_LEFT)) {
     gyroTurnLeft(900, gyro);
+  }
+
+  if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_LEFT)) {
     gyroTurnRight(900, gyro);
-    moveSteps(6665,50);
+  }
+
 }
 
 void changeTurnSpeed() {

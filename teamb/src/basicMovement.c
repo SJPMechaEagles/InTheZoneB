@@ -34,29 +34,13 @@ struct controller_values getControllerValues() {
   return vals;
 }
 
-bool turningRight(){
-  struct controller_values controller_values = getControllerValues();
-  if((controller_values.stickLY >= THRESHOLD && abs(controller_values.stickRY) <= THRESHOLD)
-    || (controller_values.stickRY >= THRESHOLD && controller_values.stickLY <= -THRESHOLD)) {
-    return true;
-  } else {
-    return false;
-  }
+bool turning(int joyX, int joyY){
+  return (abs(joyX - joyY) >= 2*THRESHOLD);
 }
 
-bool turningLeft(){
-  struct controller_values controller_values = getControllerValues();
-  if((controller_values.stickRY >= THRESHOLD && abs(controller_values.stickLY) <= THRESHOLD)
-    || (controller_values.stickLY >= THRESHOLD && controller_values.stickRY <= -THRESHOLD)){
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool drivingThreshold() {
-  struct controller_values controller_values = getControllerValues();
-  if(greaterThanThreshold(controller_values.stickLX, controller_values.stickLY) || greaterThanThreshold(controller_values.stickRX, controller_values.stickRY)){
+bool greaterThanThreshold(int joyX, int joyY) {
+  //printf("OOK. OOK. OOK? OOK! OOK! OOK? System.OOK.println(Oof); import java.OOK.RBDeathSound; #include OOK.h;  %d\n", abs(joyX));
+  if (abs(joyX) >= THRESHOLD || abs(joyY) >= THRESHOLD) {
     return true;
   } else {
     return false;
