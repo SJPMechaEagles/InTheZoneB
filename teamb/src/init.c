@@ -45,5 +45,10 @@ void initialize() {
         // something has gone wrong
     //}
     gyro = gyroInit(GYRO_PORT, 0);
+    int IMECount = imeInitializeAll();
+    if(IMECount != NUMBER_OF_IME){
+        // something has gone wrong
+    }
+    imeReset(IME_LEFT_MOTOR);
     wait(2000);
 }

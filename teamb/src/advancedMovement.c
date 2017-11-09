@@ -4,13 +4,14 @@ static TaskHandle lifterLoop;
 static int turnSpeedToggle = 0;
 static double turningMultiplier = 0.333;
 static bool lifterIsRaised = true;
+static int gyroTurnSpeed = 45;
 
 void moveSteps(int steps, int speed){
-  setMotors(speed, speed);
   int start = getEncoderSteps(IME_LEFT_MOTOR);
-  while (getEncoderSteps(IME_LEFT_MOTOR) - start < steps)
+  while (abs(getEncoderSteps(IME_LEFT_MOTOR) - start) < steps)
   {
     //waits until count >= steps
+    setMotors(speed, -speed);
   }
   setMotors(0, 0);
 }
@@ -92,30 +93,40 @@ void stopLifterLoop() {
 }
 
 void gyroTurnLeft(int degrees, Gyro gyro) {
+  //to stop early due to inertia
+  if (degrees < 60) {
+    degrees *= 0.53;
+  } else {
+    degrees -= 27;
+  }
+
   int initial = getGyroscopeValue(gyro);
   while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
-    setMotors(-80, 80);
+    setMotors(-gyroTurnSpeed, -gyroTurnSpeed);
   }
   setMotors(0, 0);
 }
 
 void gyroTurnRight(int degrees, Gyro gyro) {
+  //to stop early due to inertia
+  if (degrees < 70) {
+    degrees *= 0.53;
+  } else {
+    degrees -= 27;
+  }
   int initial = getGyroscopeValue(gyro);
   while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
-    setMotors(80, -80);
+    setMotors(gyroTurnSpeed, gyroTurnSpeed);
   }
   setMotors(0, 0);
 }
 
 void autonomousTest(Gyro gyro) {
-  if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_LEFT)) {
-    gyroTurnLeft(900, gyro);
-  }
-
-  if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_LEFT)) {
-    gyroTurnRight(900, gyro);
-  }
-
+  gyroTurnRight(45, gyro);
+  gyroTurnLeft(90, gyro);
+  moveSteps(1000, 50);
+  gyroTurnLeft(67.5, gyro);
+  moveSteps(1000, -50);
 }
 
 void changeTurnSpeed() {

@@ -12,7 +12,7 @@
 
 #define IME_LEFT_MOTOR 0
 #define IME_RIGHT_MOTOR 1
-#define NUMBER_OF_IME 6
+#define NUMBER_OF_IME 1
 
 // Analog port number gyro is plugged into
 #define GYRO_PORT 1

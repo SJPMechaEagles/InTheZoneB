@@ -21,15 +21,26 @@ void operatorControl()
 		while (1) {
 			drive(MODE_TANK_DRIVE);
 			//turn 90 degs if button 8 L/R is pressed
-			autonomousTest(gyro);
 			changeTurnSpeed();
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
+			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+				//autonomousTest(gyro);
+				gyroTurnLeft(60, gyro);
+			}
 			int steps = 0;
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
 			printf("Encoder step: %d.\n", steps);
-			delay(100);
-			}
+			delay(50);
 		}
-	stopLifterLoop();
+		stopLifterLoop();
+	} else if(mode == 2) {
+		while(1){
+			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
+			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+				autonomousTest(gyro);
+			}
+			delay(200);
+		}
+	}
 }
