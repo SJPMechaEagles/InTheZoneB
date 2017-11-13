@@ -11,6 +11,7 @@
 #define MODE_ARCADE_DRIVE 1
 #define MODE_DUAL_ARCADE_DRIVE 2
 
+int max(int a, int b);
 void moveSteps(int steps, int speed);
 void drive(int mode);
 void mobileGoalLiftTest();
@@ -19,6 +20,7 @@ void startLifterLoop();
 void stopLifterLoop();
 void gyroTurnLeft(int degrees, Gyro gyro);
 void gyroTurnRight(int degrees, Gyro gyro);
+void gyroTurn(int degrees, Gyro gyro);
 void autonomousTest(Gyro gyro);
 void changeTurnSpeed();
 #endif

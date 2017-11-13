@@ -1,10 +1,17 @@
 #include "advancedMovement.h"
+#include "math.h"
 
 static TaskHandle lifterLoop;
 static int turnSpeedToggle = 0;
 static double turningMultiplier = 0.333;
 static bool lifterIsRaised = true;
-static int gyroTurnSpeed = 45;
+static int gyroTurnSpeed = 60;
+static int gyroTurnSpeedMin = 25;
+
+int max(int a, int b) {
+  if (a > b) {return a;}
+  return b;
+}
 
 void moveSteps(int steps, int speed){
   int start = getEncoderSteps(IME_LEFT_MOTOR);
@@ -114,12 +121,49 @@ void gyroTurnRight(int degrees, Gyro gyro) {
   setMotors(0, 0);
 }
 
+void gyroTurn(int degrees, Gyro gyro) {
+  int direction;
+  //postive direction means turning right (posiive degrees)
+  if (degrees > 0) {
+    direction = 1;
+    degrees -= degrees / 10;
+  } else {
+    direction = -1;
+    degrees += degrees / 10;
+  }
+
+  int initial = getGyroscopeValue(gyro);
+  int slowDown = 0;
+  //turn while the difference is less than the target degrees
+  while (abs(initial - getGyroscopeValue(gyro)) <= abs(degrees)) {
+    //if less than 30 degs to target, slow down
+    int degsRemaining = degrees - abs(initial - getGyroscopeValue(gyro));
+    if (degsRemaining <= 38) {
+      //slow down by a fraction of degrees remaining;
+      slowDown += degsRemaining / 3;
+    }
+    setMotors(max(gyroTurnSpeedMin, gyroTurnSpeed - slowDown) * direction,
+      max(gyroTurnSpeedMin, gyroTurnSpeed - slowDown) * direction);
+    wait(20);
+
+  }
+  setMotors(0, 0);
+}
+
 void autonomousTest(Gyro gyro) {
-  gyroTurnRight(45, gyro);
-  gyroTurnLeft(90, gyro);
-  moveSteps(1000, 50);
+  gyroTurn(-45, gyro);
+  while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
+    mobileLift(127, 127);
+  }
+  moveSteps(15680,50);
+  while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
+    mobileLift(-127, -127);
+  }
+  gyroTurnLeft(157.5, gyro);
+  moveSteps(14112,50);
   gyroTurnLeft(67.5, gyro);
-  moveSteps(1000, -50);
+  moveSteps(14896,50);
+  moveSteps(1176,-50);
 }
 
 void changeTurnSpeed() {

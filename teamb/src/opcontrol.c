@@ -24,9 +24,17 @@ void operatorControl()
 			changeTurnSpeed();
 			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
-			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+			if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_RIGHT)) {
+				gyroReset(gyro);
 				//autonomousTest(gyro);
-				gyroTurnLeft(60, gyro);
+				gyroTurn(60, gyro);
+				//moveSteps(15680,50);
+			} else if (joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
+				gyroReset(gyro);
+				gyroTurn(45, gyro);
+			} else if (joystickGetDigital(MAIN_JOYSTICK, 8, JOY_DOWN)) {
+				gyroReset(gyro);
+				gyroTurn(90, gyro);
 			}
 			int steps = 0;
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
