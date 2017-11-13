@@ -94,11 +94,7 @@ void stopLifterLoop() {
 
 void gyroTurnLeft(int degrees, Gyro gyro) {
   //to stop early due to inertia
-  if (degrees < 60) {
-    degrees *= 0.53;
-  } else {
-    degrees -= 27;
-  }
+  degrees -= 27;
 
   int initial = getGyroscopeValue(gyro);
   while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
@@ -109,11 +105,8 @@ void gyroTurnLeft(int degrees, Gyro gyro) {
 
 void gyroTurnRight(int degrees, Gyro gyro) {
   //to stop early due to inertia
-  if (degrees < 70) {
-    degrees *= 0.53;
-  } else {
-    degrees -= 27;
-  }
+  degrees -= 27;
+
   int initial = getGyroscopeValue(gyro);
   while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
     setMotors(gyroTurnSpeed, gyroTurnSpeed);
