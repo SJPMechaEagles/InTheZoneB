@@ -22,25 +22,11 @@ void operatorControl()
 			drive(MODE_TANK_DRIVE);
 			//turn 90 degs if button 8 L/R is pressed
 			changeTurnSpeed();
-			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
-			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
-			//if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_RIGHT)) {
-				//gyroReset(gyro);
-			  //gyroTurn(-45, gyro);
-			  //while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
-			  //  mobileLift(127, 127);
-			  //}
-			  //moveSteps(15680,50);
-			if (joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
-				gyroReset(gyro);
-				gyroTurn(45, gyro);
-			} else if (joystickGetDigital(MAIN_JOYSTICK, 8, JOY_DOWN)) {
-				gyroReset(gyro);
-				gyroTurn(90, gyro);
-			}
 			int steps = 0;
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
 			printf("Encoder step: %d.\n", steps);
+			printf("Potentiometer reading: %d\n", analogRead(POTENTIOMETER_PORT));
+			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
 			delay(50);
 		}
 		stopLifterLoop();
