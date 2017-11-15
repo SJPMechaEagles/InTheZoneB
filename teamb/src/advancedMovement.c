@@ -62,12 +62,12 @@ void mobileGoalLifterLoop(void * parameter) {
   while (1) {
     if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_UP)) {
       while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
+      while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
         mobileLift(127, 127);
       }
       lifterIsRaised = true;
       turningMultiplier = 0.667;
     } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
-      while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
         mobileLift(-127, -127);
       }
       lifterIsRaised = false;
@@ -99,27 +99,6 @@ void stopLifterLoop() {
   taskDelete(lifterLoop);
 }
 
-void gyroTurnLeft(int degrees, Gyro gyro) {
-  //to stop early due to inertia
-  degrees -= 27;
-
-  int initial = getGyroscopeValue(gyro);
-  while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
-    setMotors(-gyroTurnSpeed, -gyroTurnSpeed);
-  }
-  setMotors(0, 0);
-}
-
-void gyroTurnRight(int degrees, Gyro gyro) {
-  //to stop early due to inertia
-  degrees -= 27;
-
-  int initial = getGyroscopeValue(gyro);
-  while (abs(initial - getGyroscopeValue(gyro)) <= degrees) {
-    setMotors(gyroTurnSpeed, gyroTurnSpeed);
-  }
-  setMotors(0, 0);
-}
 
 void gyroTurn(int degrees, Gyro gyro) {
   int direction;

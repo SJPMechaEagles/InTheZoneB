@@ -1,5 +1,8 @@
 #include "basicMovement.h"
 #include "advancedMovement.h"
+#include "math.h"
+
+const static int powerOffset = 30;
 
 void setSpeedLeft(int speedLeft){
   motorSet(MOTOR_FL, speedLeft);
@@ -34,6 +37,14 @@ struct controller_values getControllerValues() {
   return vals;
 }
 
+struct controller_values remapControllerValues(struct controller_values c) {
+  c.stickLX = usePowerCurve(c.stickLX);
+  c.stickLY = usePowerCurve(c.stickLY);
+  c.stickRX = usePowerCurve(c.stickRX);
+  c.stickRY = usePowerCurve(c.stickRY);
+  return c;
+}
+
 bool turning(int joyX, int joyY){
   return (abs(joyX - joyY) >= 2*THRESHOLD);
 }
@@ -45,4 +56,13 @@ bool greaterThanThreshold(int joyX, int joyY) {
   } else {
     return false;
   }
+}
+
+int usePowerCurve(int joystick) {
+  int offset = powerOffset;
+  if (joystick < 0) {
+    offset = - powerOffset;
+  }
+  //offset is the minimum speed to start moving
+  return pow(joystick/10 , 3) / 18 + offset;
 }
