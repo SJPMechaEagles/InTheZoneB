@@ -151,6 +151,7 @@ void gyroTurn(int degrees, Gyro gyro) {
 }
 
 void autonomousTest(Gyro gyro) {
+  gyroReset(gyro);
   gyroTurn(-45, gyro);
   while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
     mobileLift(127, 127);
@@ -159,9 +160,9 @@ void autonomousTest(Gyro gyro) {
   while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
     mobileLift(-127, -127);
   }
-  gyroTurnLeft(157.5, gyro);
+  gyroTurn(157.5, gyro);
   moveSteps(14112,50);
-  gyroTurnLeft(67.5, gyro);
+  gyroTurn(67.5, gyro);
   moveSteps(14896,50);
   moveSteps(1176,-50);
 }

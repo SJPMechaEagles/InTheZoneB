@@ -29,5 +29,5 @@
  */
 void autonomous() {
   //OOK. OOK?
-  moveSteps(6665,50);
+  moveSteps(1920,50);
 }
