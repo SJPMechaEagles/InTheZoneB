@@ -18,7 +18,7 @@ void mobileGoalLiftTest();
 void mobileGoalLifterLoop(void * parameter);
 void startLifterLoop();
 void stopLifterLoop();
-void gyroTurn(int degrees, Gyro gyro);
+void gyroTurn(int degrees, Gyro gyro, int minSpeed);
 void autonomousTest(Gyro gyro);
 void changeTurnSpeed();
 #endif

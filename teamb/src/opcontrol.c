@@ -28,6 +28,7 @@ void operatorControl()
 			printf("Potentiometer  reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
 			if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_RIGHT)) {
+					delay(60);
 					autonomousTest(gyro);
 			}
 			delay(60);
