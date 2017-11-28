@@ -1,23 +1,15 @@
 #include "advancedMovement.h"
-#include "math.h"
 
 static TaskHandle lifterLoop;
-static int turnSpeedToggle = 0;
-static double turningMultiplier = 0.333;
+static int driveSpeedToggle = 0;
+static double driveMultiplier = 0.333;
 static bool lifterIsRaised = true;
-static int gyroTurnSpeed = 60;
-static int gyroTurnSpeedMin = 25;
 
-int max(int a, int b) {
-  if (a > b) {return a;}
-  return b;
-}
 
 void moveSteps(int steps, int speed){
   int start = getEncoderSteps(IME_LEFT_MOTOR);
   while (abs(getEncoderSteps(IME_LEFT_MOTOR) - start) < steps)
   {
-    //waits until count >= steps
     setMotors(speed, -speed);
   }
   setMotors(0, 0);
@@ -38,18 +30,17 @@ void tankDrive(int speedLeft, int speedRight) {
 
 void drive(int mode) {
   struct controller_values controller = getControllerValues();
-  if( !greaterThanThreshold(controller.stickLY, controller.stickLX) &&
-    !greaterThanThreshold(controller.stickRY, controller.stickRX) ) {
+  if(!isGreaterThanThreshold(controller.stickLY, controller.stickLX) &&
+    !isGreaterThanThreshold(controller.stickRY, controller.stickRX)) {
     setMotors(0, 0);
     return;
   }
+  //controller = remapControllerValues(controller);
 
   if (mode == MODE_TANK_DRIVE) {
-    if ( turnSpeedToggle%2 == 1 && turning(controller.stickLY, controller.stickRY) ) {
-        //slow down turning based on the state of the lifter
-        //if it is enabled.
-        tankDrive(controller.stickLY*turningMultiplier,
-          controller.stickRY*turningMultiplier);
+    if (driveSpeedToggle == 1) {
+        tankDrive(controller.stickLY*driveMultiplier,
+          controller.stickRY*driveMultiplier);
     } else {
       tankDrive(controller.stickLY,controller.stickRY);
     }
@@ -58,36 +49,32 @@ void drive(int mode) {
   }
 }
 
-void mobileGoalLifterLoop(void * parameter) {
-  while (1) {
-    if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_UP)) {
-      while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
-      while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
-        mobileLift(127, 127);
-      }
-      lifterIsRaised = true;
-      turningMultiplier = 0.667;
-    } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
-        mobileLift(-127, -127);
-      }
-      lifterIsRaised = false;
-      //turn solwer when lifter down
-      turningMultiplier = 0.333;
-    } else {
-      mobileLift(0, 0);
-    }
-    delay(20);
+void changeDriveSpeed() {
+  if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_UP)) {
+    driveSpeedToggle++;
+    driveSpeedToggle = driveSpeedToggle % 2;
+    wait(150);
   }
 }
 
-// Test method in case potentiometer messes up
-void mobileGoalLiftTest() {
-  if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
-    mobileLift(100, 100);
-  } else if (joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
-    mobileLift(-100,-100);
-  } else {
-    mobileLift(0,0);
+void mobileGoalLifterLoop(void * parameter) {
+  while (1) {
+    if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_UP)) {
+      while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
+        setMobileLift(127);
+      }
+      lifterIsRaised = true;
+      driveMultiplier = 0.667;
+    } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
+      while (getRawPot(POTENTIOMETER_PORT) <= 2550) {
+        setMobileLift(-127);
+      }
+      lifterIsRaised = false;
+      driveMultiplier = 0.333;
+    } else {
+      setMobileLift(0);
+    }
+    delay(20);
   }
 }
 
@@ -99,30 +86,32 @@ void stopLifterLoop() {
   taskDelete(lifterLoop);
 }
 
+int max(int a, int b) {
+  if (a > b) {return a;}
+  return b;
+}
 
-void gyroTurn(int degrees, Gyro gyro) {
+void gyroTurn(int degrees, Gyro gyro, int minSpeed) {
   int direction;
   //postive direction means turning right (posiive degrees)
   if (degrees > 0) {
     direction = 1;
-    degrees -= degrees / 10;
   } else {
     direction = -1;
-    degrees += degrees / 10;
   }
-
+  degrees -= degrees / 10;
   int initial = getGyroscopeValue(gyro);
   int slowDown = 0;
   //turn while the difference is less than the target degrees
   while (abs(initial - getGyroscopeValue(gyro)) <= abs(degrees)) {
-    //if less than 30 degs to target, slow down
-    int degsRemaining = degrees - abs(initial - getGyroscopeValue(gyro));
+    //if less than 38 degs to target, slow down
+    int degsRemaining = abs(degrees) - abs(initial - getGyroscopeValue(gyro));
     if (degsRemaining <= 38) {
       //slow down by a fraction of degrees remaining;
       slowDown += degsRemaining / 3;
     }
-    setMotors(max(gyroTurnSpeedMin, gyroTurnSpeed - slowDown) * direction,
-      max(gyroTurnSpeedMin, gyroTurnSpeed - slowDown) * direction);
+    setMotors(max(minSpeed, GYRO_TURN_SPEED - slowDown) * direction,
+      max(minSpeed, GYRO_TURN_SPEED - slowDown) * direction);
     wait(20);
 
   }
@@ -130,25 +119,26 @@ void gyroTurn(int degrees, Gyro gyro) {
 }
 
 void autonomousTest(Gyro gyro) {
-  gyroReset(gyro);
-  gyroTurn(-45, gyro);
-  while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
-    mobileLift(127, 127);
+  //lowers lift at start
+  while (getRawPot(POTENTIOMETER_PORT) <= 2550) {
+    setMobileLift(-127);
   }
-  moveSteps(15680,50);
-  while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
-    mobileLift(-127, -127);
-  }
-  gyroTurn(157.5, gyro);
-  moveSteps(14112,50);
-  gyroTurn(67.5, gyro);
-  moveSteps(14896,50);
-  moveSteps(1176,-50);
-}
 
-void changeTurnSpeed() {
-  if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_UP)) {
-    turnSpeedToggle++;
-    wait(150);
+  moveSteps(2350,50);
+  //raises lifter
+  while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
+    setMobileLift(127);
+  }
+  //there's resistence
+  gyroTurn(193, gyro, GYRO_TURN_SPEED_MIN_FAST);
+  moveSteps(3400,127);
+  //get the goal out
+  while (getRawPot(POTENTIOMETER_PORT) <= 2600) {
+    setMobileLift(-127);
+  }
+  moveSteps(200,-127);
+  //move the lifter out of the way
+  while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
+    setMobileLift(127);
   }
 }
