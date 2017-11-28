@@ -2,24 +2,37 @@
 #define _BASICM_H_
 #include <API.h>
 #include "ports.h"
+#include "math.h"
+#include "advancedMovement.h"
 
-#define THRESHOLD 15
+//The minimum joystick value to be perceived as intentional movement
+#define JOYSTICK_THRESHOLD 15
+//The minimum motor power for robot to move
+#define FRICTION_THRESHOLD 30
 
+
+//Set a single side of the robot a certain speed
 void setSpeedLeft(int speedLeft);
 void setSpeedRight(int speedRight);
+//Utilize the previous methods to set each side of the robot
 void setMotors(int speedLeft, int speedRight);
-void mobileLift(int speedLeft, int speedRight);
-bool turning(int joyX, int joyY);
-bool greaterThanThreshold(int joyX, int joyY);
+//Sets the mobile goal lifter to a single speed
+void setMobileLift(int speed);
+//Determines whether a joystick movement is intentional
+bool isGreaterThanThreshold(int joyX, int joyY);
+//Manipulates the joystick values by applying them to the cubic curve
+// while still keeping them in range
 int usePowerCurve(int input);
-struct controller_values getControllerValues();
-struct controller_values remapControllerValues(struct controller_values vals);
-
+//Creates a storage for joystick values
 struct controller_values {
   int stickLX;
   int stickLY;
   int stickRX;
   int stickRY;
 };
+//Stores the joystick values for later reference
+struct controller_values getControllerValues();
+//Applies the cubic curve onto the stored joystick values
+struct controller_values remapControllerValues(struct controller_values vals);
 
 #endif

@@ -27,7 +27,9 @@
  * The autonomous task may exit, unlike operatorControl() which should never exit. If it does
  * so, the robot will await a switch to another mode or disable/enable cycle.
  */
+extern Gyro gyro;
 void autonomous() {
   //OOK. OOK?
-  moveSteps(1920,50);
+  
+  autonomousTest(gyro);
 }
