@@ -19,6 +19,7 @@ void operatorControl()
 		startLifterLoop();
 		while (1) {
 			drive(MODE_ARCADE_DRIVE);
+			changeDriveSpeed();
 			delay(60);
 		}
 		stopLifterLoop();

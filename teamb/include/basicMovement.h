@@ -16,13 +16,16 @@ void setSpeedLeft(int speedLeft);
 void setSpeedRight(int speedRight);
 //Utilize the previous methods to set each side of the robot
 void setMotors(int speedLeft, int speedRight);
+
 //Sets the mobile goal lifter to a single speed
 void setMobileLift(int speed);
 //Determines whether a joystick movement is intentional
+
 bool isGreaterThanThreshold(int joyX, int joyY);
 //Manipulates the joystick values by applying them to the cubic curve
 // while still keeping them in range
 int usePowerCurve(int input);
+
 //Creates a storage for joystick values
 struct controller_values {
   int stickLX;
