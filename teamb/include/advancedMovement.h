@@ -11,6 +11,7 @@
 #define MODE_TANK_DRIVE 0
 #define MODE_ARCADE_DRIVE 1
 #define MODE_DUAL_ARCADE_DRIVE 2
+#define MAX_DRIVE_SPEED 127
 #define GYRO_TURN_SPEED 60
 #define GYRO_TURN_SPEED_MIN 25
 #define GYRO_TURN_SPEED_MIN_FAST 40
@@ -18,7 +19,8 @@
 
 //Moves the robot a set distance at a set speed
 void moveSteps(int steps, int speed);
-
+void raiseMobileLift();
+void lowerMobileLift();
 //Allows the user to change the drive speed of the robot between fast and slow
 void changeDriveSpeed();
 //Main drive code; Utilizes modes

@@ -6,7 +6,7 @@ static double driveMultiplier = 0.333;
 static bool lifterIsRaised = true;
 
 
-void moveSteps(int steps, int speed){
+void moveSteps(int steps, int speed) {
   int start = getEncoderSteps(IME_LEFT_MOTOR);
   while (abs(getEncoderSteps(IME_LEFT_MOTOR) - start) < steps)
   {
@@ -15,6 +15,18 @@ void moveSteps(int steps, int speed){
   setMotors(0, 0);
 }
 
+void raiseMobileLift()
+{
+  while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
+    setMobileLift(MAX_DRIVE_SPEED);
+  }
+}
+void lowerMobileLift()
+{
+  while (getRawPot(POTENTIOMETER_PORT) <= 2550) {
+    setMobileLift(-MAX_DRIVE_SPEED);
+  }
+}
 void arcadeControl(int stickX, int stickY)
 {
   int left = stickY + stickX;
@@ -120,25 +132,20 @@ void gyroTurn(int degrees, Gyro gyro, int minSpeed) {
 
 void autonomousTest(Gyro gyro) {
   //lowers lift at start
-  while (getRawPot(POTENTIOMETER_PORT) <= 2550) {
-    setMobileLift(-127);
-  }
-
+  lowerMobileLift();
+  /*
+  New autonomous: turn less after the robot acquires the mobile goal, go away
+  from the goal, then go straight at the 20-point zone. (0 degree angle of incidence)
+  */
   moveSteps(2350,50);
   //raises lifter
-  while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
-    setMobileLift(127);
-  }
+  raiseMobileLift();
   //there's resistence
   gyroTurn(193, gyro, GYRO_TURN_SPEED_MIN_FAST);
   moveSteps(3400,127);
   //get the goal out
-  while (getRawPot(POTENTIOMETER_PORT) <= 2600) {
-    setMobileLift(-127);
-  }
+  lowerMobileLift();
   moveSteps(200,-127);
   //move the lifter out of the way
-  while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
-    setMobileLift(127);
-  }
+  raiseMobileLift();
 }

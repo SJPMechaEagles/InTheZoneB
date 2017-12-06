@@ -13,7 +13,7 @@ void operatorControl()
 	//Mode 0: Arcade Control
 	//Mode 1: Tank Drive
 	//Mode 2: Autonomous Test
-	int mode = 1;
+	int mode = 2;
 
 	if (mode == 0) {
 		startLifterLoop();
@@ -32,7 +32,7 @@ void operatorControl()
 		}
 		stopLifterLoop();
 	} else if(mode == 2) {
-		while(1){
+		while(1) {
 			int steps = 0;
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
 			printf("Encoder step: %d.\n", steps);
