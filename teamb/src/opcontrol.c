@@ -13,8 +13,9 @@ void operatorControl()
 	//Mode 0: Arcade Control
 	//Mode 1: Tank Drive
 	//Mode 2: Autonomous Test
-	int mode = 2;
+	int mode = 1;
 
+	
 	if (mode == 0) {
 		startLifterLoop();
 		while (1) {
@@ -26,7 +27,11 @@ void operatorControl()
 	} else if(mode == 1) {
 		startLifterLoop();
 		while (1) {
+			printf("Potentiometer  reading: %d\n", analogRead(POTENTIOMETER_PORT));
 			drive(MODE_TANK_DRIVE);
+			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+				autonomousTest(gyro);
+			}
 			changeDriveSpeed();
 			delay(60);
 		}

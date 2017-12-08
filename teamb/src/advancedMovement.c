@@ -17,16 +17,18 @@ void moveSteps(int steps, int speed) {
 
 void raiseMobileLift()
 {
-  while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
+  while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
     setMobileLift(MAX_DRIVE_SPEED);
   }
 }
 void lowerMobileLift()
 {
-  while (getRawPot(POTENTIOMETER_PORT) <= 2550) {
+  while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
     setMobileLift(-MAX_DRIVE_SPEED);
   }
 }
+
+
 void arcadeControl(int stickX, int stickY)
 {
   int left = stickY + stickX;
@@ -72,15 +74,11 @@ void changeDriveSpeed() {
 void mobileGoalLifterLoop(void * parameter) {
   while (1) {
     if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_UP)) {
-      while (getRawPot(POTENTIOMETER_PORT) >= 1350) {
-        setMobileLift(127);
-      }
+      raiseMobileLift();
       lifterIsRaised = true;
       driveMultiplier = 0.667;
     } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
-      while (getRawPot(POTENTIOMETER_PORT) <= 2550) {
-        setMobileLift(-127);
-      }
+      lowerMobileLift();
       lifterIsRaised = false;
       driveMultiplier = 0.333;
     } else {
