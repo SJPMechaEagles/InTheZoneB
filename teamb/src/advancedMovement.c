@@ -135,13 +135,19 @@ void autonomousTest(Gyro gyro) {
   New autonomous: turn less after the robot acquires the mobile goal, go away
   from the goal, then go straight at the 20-point zone. (0 degree angle of incidence)
   */
-  moveSteps(2350,50);
+  moveSteps(2320,50);
   //raises lifter
   raiseMobileLift();
-  //there's resistence
-  gyroTurn(193, gyro, GYRO_TURN_SPEED_MIN_FAST);
-  moveSteps(3400,127);
-  //get the goal out
+  //there's resistence - 170 deg intended
+  gyroTurn(-183, gyro, GYRO_TURN_SPEED_MIN_FAST);
+  moveSteps(1900,127);
+  //slow down
+  moveSteps(400,70);
+  moveSteps(300,45);
+  gyroTurn(-53, gyro, GYRO_TURN_SPEED_MIN);
+  //run at the scoring zone
+  moveSteps(1500,127);
+  //get the mobile goal out and back out
   lowerMobileLift();
   moveSteps(200,-127);
   //move the lifter out of the way

@@ -13,9 +13,9 @@ void operatorControl()
 	//Mode 0: Arcade Control
 	//Mode 1: Tank Drive
 	//Mode 2: Autonomous Test
-	int mode = 1;
+	int mode = 2;
 
-	
+
 	if (mode == 0) {
 		startLifterLoop();
 		while (1) {
@@ -32,6 +32,7 @@ void operatorControl()
 			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
 				autonomousTest(gyro);
 			}
+
 			changeDriveSpeed();
 			delay(60);
 		}
