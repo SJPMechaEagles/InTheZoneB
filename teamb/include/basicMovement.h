@@ -19,6 +19,7 @@ void setMotors(int speedLeft, int speedRight);
 
 //Sets the mobile goal lifter to a single speed
 void setMobileLift(int speed);
+void setLifter(int speed);
 //Determines whether a joystick movement is intentional
 
 bool isGreaterThanThreshold(int joyX, int joyY);

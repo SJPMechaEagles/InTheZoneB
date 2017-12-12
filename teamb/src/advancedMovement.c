@@ -15,15 +15,28 @@ void moveSteps(int steps, int speed) {
   setMotors(0, 0);
 }
 
+void raiseLifter() {
+  while(getRawPot(LIFTER_POTENTIOMETER) >= 0) {
+    setLifter(MAX_DRIVE_SPEED);
+  }
+}
+
 void raiseMobileLift()
 {
-  while (getRawPot(POTENTIOMETER_PORT) >= 1300) {
+  while (getRawPot(MOBILE_POTENTIOMETER) >= 1300) {
     setMobileLift(MAX_DRIVE_SPEED);
   }
 }
+
+void lowerLifter() {
+  while(getRawPot(LIFTER_POTENTIOMETER) >= 0) {
+    setLifter(-MAX_DRIVE_SPEED);
+  }
+}
+
 void lowerMobileLift()
 {
-  while (getRawPot(POTENTIOMETER_PORT) <= 2700) {
+  while (getRawPot(MOBILE_POTENTIOMETER) <= 2700) {
     setMobileLift(-MAX_DRIVE_SPEED);
   }
 }
@@ -136,17 +149,16 @@ void autonomousTest(Gyro gyro) {
   from the goal, then go straight at the 20-point zone. (0 degree angle of incidence)
   */
   moveSteps(2320,50);
-  //raises lifter
   raiseMobileLift();
   //there's resistence - 170 deg intended
   gyroTurn(-183, gyro, GYRO_TURN_SPEED_MIN_FAST);
-  moveSteps(1900,127);
+  moveSteps(2200,127);
   //slow down
   moveSteps(400,70);
   moveSteps(300,45);
-  gyroTurn(-53, gyro, GYRO_TURN_SPEED_MIN);
+  gyroTurn(-53, gyro, GYRO_TURN_SPEED_MIN_FAST);
   //run at the scoring zone
-  moveSteps(1500,127);
+  moveSteps(1200,127);
   //get the mobile goal out and back out
   lowerMobileLift();
   moveSteps(200,-127);

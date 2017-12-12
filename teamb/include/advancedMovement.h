@@ -19,6 +19,8 @@
 
 //Moves the robot a set distance at a set speed
 void moveSteps(int steps, int speed);
+void raiseLifter();
+void lowerLifter();
 void raiseMobileLift();
 void lowerMobileLift();
 //Allows the user to change the drive speed of the robot between fast and slow

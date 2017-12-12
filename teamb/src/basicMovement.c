@@ -21,6 +21,11 @@ void setMobileLift(int speed) {
   motorSet(MOTOR_MLR, speed);
 }
 
+void setLifter(int speed) {
+  motorSet(MOTOR_LBR, speed);
+  motorSet(MOTOR_LBL, speed);
+}
+
 bool isGreaterThanThreshold(int joyX, int joyY) {
   if (abs(joyX) >= JOYSTICK_THRESHOLD || abs(joyY) >= JOYSTICK_THRESHOLD) {
     return true;

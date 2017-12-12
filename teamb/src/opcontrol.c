@@ -13,7 +13,8 @@ void operatorControl()
 	//Mode 0: Arcade Control
 	//Mode 1: Tank Drive
 	//Mode 2: Autonomous Test
-	int mode = 2;
+	//Mode 3: Lifter Test
+	int mode = 1;
 
 
 	if (mode == 0) {
@@ -27,14 +28,14 @@ void operatorControl()
 	} else if(mode == 1) {
 		startLifterLoop();
 		while (1) {
-			printf("Potentiometer  reading: %d\n", analogRead(POTENTIOMETER_PORT));
+			printf("Potentiometer  reading: %d\n", analogRead(MOBILE_POTENTIOMETER));
 			drive(MODE_TANK_DRIVE);
 			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
 				autonomousTest(gyro);
 			}
 
 			changeDriveSpeed();
-			delay(60);
+			delay(300);
 		}
 		stopLifterLoop();
 	} else if(mode == 2) {
@@ -42,12 +43,22 @@ void operatorControl()
 			int steps = 0;
 			steps = getEncoderSteps(IME_LEFT_MOTOR);
 			printf("Encoder step: %d.\n", steps);
-			printf("Potentiometer  reading: %d\n", analogRead(POTENTIOMETER_PORT));
+			printf("Potentiometer  reading: %d\n", analogRead(MOBILE_POTENTIOMETER));
 			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
 			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
 				autonomousTest(gyro);
 			}
 			delay(200);
 		}
+	} else if(mode == 3) {
+			while(1) {
+				printf("Potentiometer  reading: %d\n", analogRead(LIFTER_POTENTIOMETER));
+				if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
+					raiseLifter();
+				}
+				if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_DOWN)) {
+					lowerLifter();
+				}
+			}
+		}
 	}
-}
