@@ -52,13 +52,14 @@ void operatorControl()
 		}
 	} else if(mode == 3) {
 			while(1) {
-				printf("Potentiometer  reading: %d\n", analogRead(LIFTER_POTENTIOMETER));
 				if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
-					raiseLifter();
+					setLifter(127);
+				} else if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_DOWN)) {
+					setLifter(-127);
+				} else {
+					setLifter(0);
 				}
-				if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_DOWN)) {
-					lowerLifter();
-				}
+				delay(300);
 			}
 		}
 	}

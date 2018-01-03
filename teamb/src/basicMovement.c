@@ -22,8 +22,12 @@ void setMobileLift(int speed) {
 }
 
 void setLifter(int speed) {
-  motorSet(MOTOR_LBR, speed);
+  //sets lifter speed, right side is mirrored
+  //left side is slower, so reduce the speed on the right side
+  motorSet(MOTOR_LFL, speed);
   motorSet(MOTOR_LBL, speed);
+  motorSet(MOTOR_LFR, -(speed * 0.97));
+  motorSet(MOTOR_LBR, -(speed * 0.97));
 }
 
 bool isGreaterThanThreshold(int joyX, int joyY) {

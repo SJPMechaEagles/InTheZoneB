@@ -7,11 +7,10 @@
 #define MOTOR_FR 3
 #define MOTOR_BR 4
 
-#define MOTOR_LBL 5
-#define MOTOR_LBR 6
-
-#define MOTOR_CLAWL 7
-#define MOTOR_CLAWR 8
+#define MOTOR_LFL 5
+#define MOTOR_LBL 6
+#define MOTOR_LFR 7
+#define MOTOR_LBR 8
 
 #define MOTOR_MLR 9
 #define MOTOR_MLL 10

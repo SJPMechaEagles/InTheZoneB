@@ -32,6 +32,7 @@ void drive(int mode);
 //can turn and lift at the same time; Also changes the slower turn speed
 //based on the state of the lifter
 void mobileGoalLifterLoop(void * parameter);
+void scissorLifterLoop(void * parameter);
 //Begins the loop
 void startLifterLoop();
 //Ends the loop

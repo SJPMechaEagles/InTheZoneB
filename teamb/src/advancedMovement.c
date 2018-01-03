@@ -1,9 +1,10 @@
 #include "advancedMovement.h"
 
-static TaskHandle lifterLoop;
+static TaskHandle mobileLifterTask;
+static TaskHandle scissorLifterTask;
 static int driveSpeedToggle = 0;
 static double driveMultiplier = 0.333;
-static bool lifterIsRaised = true;
+static bool mobileLifterIsRaised = true;
 
 
 void moveSteps(int steps, int speed) {
@@ -21,6 +22,12 @@ void raiseLifter() {
   }
 }
 
+void lowerLifter() {
+  while(getRawPot(LIFTER_POTENTIOMETER) >= 0) {
+    setLifter(-MAX_DRIVE_SPEED);
+  }
+}
+
 void raiseMobileLift()
 {
   while (getRawPot(MOBILE_POTENTIOMETER) >= 1300) {
@@ -28,15 +35,9 @@ void raiseMobileLift()
   }
 }
 
-void lowerLifter() {
-  while(getRawPot(LIFTER_POTENTIOMETER) >= 0) {
-    setLifter(-MAX_DRIVE_SPEED);
-  }
-}
-
 void lowerMobileLift()
 {
-  while (getRawPot(MOBILE_POTENTIOMETER) <= 2700) {
+  while (getRawPot(MOBILE_POTENTIOMETER) <= 2800) {
     setMobileLift(-MAX_DRIVE_SPEED);
   }
 }
@@ -84,29 +85,46 @@ void changeDriveSpeed() {
   }
 }
 
+//lifts the mobile goal intake with a potentiometer
 void mobileGoalLifterLoop(void * parameter) {
   while (1) {
     if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_UP)) {
       raiseMobileLift();
-      lifterIsRaised = true;
+      mobileLifterIsRaised = true;
       driveMultiplier = 0.667;
     } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
       lowerMobileLift();
-      lifterIsRaised = false;
+      mobileLifterIsRaised = false;
       driveMultiplier = 0.333;
     } else {
       setMobileLift(0);
     }
-    delay(20);
+    delay(30);
+  }
+}
+
+//lifts the main lifter
+void scissorLifterLoop(void * parameter) {
+  while (1) {
+    if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_UP)) {
+      setLifter(100);
+    } else if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_DOWN)) {
+      setLifter(-30);
+    } else {
+      setLifter(0);
+    }
+    delay(30);
   }
 }
 
 void startLifterLoop() {
-  lifterLoop = taskCreate(mobileGoalLifterLoop, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+  mobileLifterTask = taskCreate(mobileGoalLifterLoop, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+  scissorLifterTask = taskCreate(scissorLifterLoop, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 }
 
 void stopLifterLoop() {
-  taskDelete(lifterLoop);
+  taskDelete(mobileLifterTask);
+  taskDelete(scissorLifterTask);
 }
 
 int max(int a, int b) {
@@ -144,10 +162,6 @@ void gyroTurn(int degrees, Gyro gyro, int minSpeed) {
 void autonomousTest(Gyro gyro) {
   //lowers lift at start
   lowerMobileLift();
-  /*
-  New autonomous: turn less after the robot acquires the mobile goal, go away
-  from the goal, then go straight at the 20-point zone. (0 degree angle of incidence)
-  */
   moveSteps(2320,50);
   raiseMobileLift();
   //there's resistence - 170 deg intended
