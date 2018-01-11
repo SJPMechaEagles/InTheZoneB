@@ -4,6 +4,7 @@
 #include <API.h>
 #include "ports.h"
 #include "basicMovement.h"
+#include "lessAdvancedMovement.h"
 #include "sensors.h"
 #include "controller.h"
 #include "math.h"

@@ -28,12 +28,22 @@ void setClaw(int speed) {
 }
 
 void setLifter(int speed) {
-  //sets lifter speed, right side is mirrored
+  //sets scissor lifter speed, right side is mirrored
   //left side is slower, so reduce the speed on the right side
   motorSet(MOTOR_LFL, speed);
   motorSet(MOTOR_LBL, speed);
-  motorSet(MOTOR_LFR, -(speed * 0.97));
-  motorSet(MOTOR_LBR, -(speed * 0.97));
+  motorSet(MOTOR_LFR, speed);
+  motorSet(MOTOR_LBR, speed);
+}
+
+void setLifterSide(bool leftSide, int speed) {
+  if (leftSide) {
+    motorSet(MOTOR_LFL, speed);
+    motorSet(MOTOR_LBL, speed);
+  } else {
+    motorSet(MOTOR_LFR, speed);
+    motorSet(MOTOR_LBR, speed);
+  }
 }
 
 bool isGreaterThanThreshold(int joyX, int joyY) {

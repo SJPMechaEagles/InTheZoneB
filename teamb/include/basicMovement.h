@@ -22,6 +22,7 @@ void setMobileLift(int speed);
 void setCone(int speed);
 void setClaw(int speed);
 void setLifter(int speed);
+void setLifterSide(bool leftSide, int speed);
 //Determines whether a joystick movement is intentional
 
 bool isGreaterThanThreshold(int joyX, int joyY);
