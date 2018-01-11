@@ -18,38 +18,45 @@ void operatorControl()
 
 
 	if (mode == 0) {
-		startLifterLoop();
+		startLoops();
 		while (1) {
 			drive(MODE_ARCADE_DRIVE);
 			changeDriveSpeed();
 			delay(60);
 		}
-		stopLifterLoop();
+		stopLoops();
 	} else if(mode == 1) {
-		startLifterLoop();
+		startLoops();
 		while (1) {
-			printf("Potentiometer  reading: %d\n", analogRead(MOBILE_POTENTIOMETER));
+			/*int steps = 0;
+			steps = getEncoderSteps(IME_RIGHT_MOTOR);
+			printf("Encoder step: %d.\n", steps);
+			printf("Mobile potentiometer  reading: %d\n", analogRead(MOBILE_POTENTIOMETER));
+			printf("Claw potentiometer  reading: %d\n", analogRead(CLAW_POTENTIOMETER));*/
+			printf("Lifter potentiometer  reading: %d\n", analogRead(LIFTER_POTENTIOMETER));
+			//printf("Gyroscope heading: %d.\n", gyroGet(gyro));
 			drive(MODE_TANK_DRIVE);
 			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
 				autonomousTest(gyro);
 			}
-
 			changeDriveSpeed();
-			delay(300);
+			delay(100);
 		}
-		stopLifterLoop();
+		stopLoops();
 	} else if(mode == 2) {
-		while(1) {
-			int steps = 0;
-			steps = getEncoderSteps(IME_LEFT_MOTOR);
-			printf("Encoder step: %d.\n", steps);
-			printf("Potentiometer  reading: %d\n", analogRead(MOBILE_POTENTIOMETER));
-			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
-			if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
-				autonomousTest(gyro);
+			while(1) {
+				int steps = 0;
+				steps = getEncoderSteps(IME_LEFT_MOTOR);
+				printf("Encoder step: %d.\n", steps);
+				printf("Mobile potentiometer  reading: %d\n", analogRead(MOBILE_POTENTIOMETER));
+				printf("Claw potentiometer  reading: %d\n", analogRead(CLAW_POTENTIOMETER));
+				printf("Lifter potentiometer  reading: %d\n", analogRead(LIFTER_POTENTIOMETER));
+				printf("Gyroscope heading: %d.\n", gyroGet(gyro));
+				if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_RIGHT)) {
+					autonomousTest(gyro);
+				}
+				delay(200);
 			}
-			delay(200);
-		}
 	} else if(mode == 3) {
 			while(1) {
 				if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
@@ -61,5 +68,5 @@ void operatorControl()
 				}
 				delay(300);
 			}
-		}
 	}
+}

@@ -1,17 +1,15 @@
 #include "basicMovement.h"
 
 
-void setSpeedLeft(int speedLeft){
-  motorSet(MOTOR_FL, speedLeft);
-  motorSet(MOTOR_BL, speedLeft);
+void setSpeedLeft(int speedLeft) {
+  motorSet(MOTOR_L, speedLeft);
 }
 
-void setSpeedRight(int speedRight){
-  motorSet(MOTOR_FR, speedRight);
-  motorSet(MOTOR_BR, speedRight);
+void setSpeedRight(int speedRight) {
+  motorSet(MOTOR_R, speedRight);
 }
 
-void setMotors(int speedLeft, int speedRight){
+void setMotors(int speedLeft, int speedRight) {
   setSpeedLeft(speedLeft);
   setSpeedRight(speedRight);
 }
@@ -19,6 +17,14 @@ void setMotors(int speedLeft, int speedRight){
 void setMobileLift(int speed) {
   motorSet(MOTOR_MLL, speed);
   motorSet(MOTOR_MLR, speed);
+}
+
+void setCone(int speed) {
+  motorSet(MOTOR_CLAW, speed);
+}
+
+void setClaw(int speed) {
+  motorSet(MOTOR_CL, speed);
 }
 
 void setLifter(int speed) {

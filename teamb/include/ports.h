@@ -2,10 +2,12 @@
 #define _PORTS_H_
 #include <API.h>
 
-#define MOTOR_FL 1
-#define MOTOR_BL 2
-#define MOTOR_FR 3
-#define MOTOR_BR 4
+#define MOTOR_CLAW 1
+
+#define MOTOR_R 2
+#define MOTOR_L 3
+
+#define MOTOR_CL 4
 
 #define MOTOR_LFL 5
 #define MOTOR_LBL 6
@@ -17,7 +19,7 @@
 
 #define IME_LEFT_MOTOR 0
 #define IME_RIGHT_MOTOR 1
-#define NUMBER_OF_IME 1
+#define NUMBER_OF_IME 2
 
 #define GYRO_PORT 1
 #define MOBILE_POTENTIOMETER 2

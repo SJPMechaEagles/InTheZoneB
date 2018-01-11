@@ -41,10 +41,14 @@ void initializeIO() {
 Gyro gyro;
 void initialize() {
   // Check count to ensure all IMEs are plugged in!
-    //int IMECount = imeInitializeAll();
-    //if(IMECount != NUMBER_OF_IME){
-        // something has gone wrong
-    //}
     delay(5000);
     gyro = gyroInit(GYRO_PORT, 0);
+    int IMECount = imeInitializeAll();
+    if(IMECount != NUMBER_OF_IME){
+        printf("Wrong Number of IMEs");
+    }
+    imeReset(IME_LEFT_MOTOR);
+    imeReset(IME_RIGHT_MOTOR);
+    wait(2000);
+
 }

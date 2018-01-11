@@ -2,6 +2,7 @@
 
 static TaskHandle mobileLifterTask;
 static TaskHandle scissorLifterTask;
+static TaskHandle clawLoopTask;
 static int driveSpeedToggle = 0;
 static double driveMultiplier = 0.333;
 static bool mobileLifterIsRaised = true;
@@ -107,7 +108,7 @@ void mobileGoalLifterLoop(void * parameter) {
 void scissorLifterLoop(void * parameter) {
   while (1) {
     if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_UP)) {
-      setLifter(100);
+      setLifter(127);
     } else if (joystickGetDigital(MAIN_JOYSTICK, 5, JOY_DOWN)) {
       setLifter(-30);
     } else {
@@ -115,16 +116,40 @@ void scissorLifterLoop(void * parameter) {
     }
     delay(30);
   }
+  if(getRawPot(LIFTER_POTENTIOMETER) < 650) {
+    setLifter(90);
+  }
 }
 
-void startLifterLoop() {
+void clawLoop(void * parameter) {
+  while(1) {
+    if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_UP)) {
+      setCone(127);
+    } else if(joystickGetDigital(MAIN_JOYSTICK, 7, JOY_DOWN)) {
+      setCone(-127);
+    } else {
+      setCone(0);
+    }
+    if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)) {
+      setClaw(127);
+    } else if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_DOWN)) {
+      setClaw(-127);
+    } else {
+      setClaw(0);
+    }
+  }
+}
+
+void startLoops() {
   mobileLifterTask = taskCreate(mobileGoalLifterLoop, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
   scissorLifterTask = taskCreate(scissorLifterLoop, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+  clawLoopTask = taskCreate(clawLoop,TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 }
 
-void stopLifterLoop() {
+void stopLoops() {
   taskDelete(mobileLifterTask);
   taskDelete(scissorLifterTask);
+  clawLoopTask = taskCreate(clawLoop,TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 }
 
 int max(int a, int b) {

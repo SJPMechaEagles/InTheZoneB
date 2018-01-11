@@ -33,10 +33,11 @@ void drive(int mode);
 //based on the state of the lifter
 void mobileGoalLifterLoop(void * parameter);
 void scissorLifterLoop(void * parameter);
-//Begins the loop
-void startLifterLoop();
-//Ends the loop
-void stopLifterLoop();
+void clawLoop(void * parameter);
+//Begins the loops
+void startLoops();
+//Ends the loops
+void stopLoops();
 
 //Returns the bigger integer of a and b
 int max(int a, int b);
