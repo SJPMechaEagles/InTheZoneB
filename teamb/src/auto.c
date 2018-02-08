@@ -29,6 +29,4 @@
  */
 extern Gyro gyro;
 void autonomous() {
-  //OOK. OOK?
-  autonomousTest(gyro);
 }

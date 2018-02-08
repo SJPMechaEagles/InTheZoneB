@@ -4,14 +4,10 @@
 #include <API.h>
 #include "ports.h"
 #include "basicMovement.h"
-#include "lessAdvancedMovement.h"
 #include "sensors.h"
 #include "controller.h"
 #include "math.h"
 
-#define MODE_TANK_DRIVE 0
-#define MODE_ARCADE_DRIVE 1
-#define MODE_DUAL_ARCADE_DRIVE 2
 #define MAX_DRIVE_SPEED 127
 #define GYRO_TURN_SPEED 60
 #define GYRO_TURN_SPEED_MIN 28
@@ -20,21 +16,16 @@
 
 //Moves the robot a set distance at a set speed
 void moveSteps(int steps, int speed);
-void raiseLifter();
-void lowerLifter();
 void raiseMobileLift();
 void lowerMobileLift();
-//Allows the user to change the drive speed of the robot between fast and slow
-void changeDriveSpeed();
-//Main drive code; Utilizes modes
-void drive(int mode);
+
+//Main drive code
+void drive();
 
 //Creates a constant loop for the mobile goal lifter so that the user
 //can turn and lift at the same time; Also changes the slower turn speed
 //based on the state of the lifter
 void mobileGoalLifterLoop(void * parameter);
-void scissorLifterLoop(void * parameter);
-void clawLoop(void * parameter);
 //Begins the loops
 void startLoops();
 //Ends the loops

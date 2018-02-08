@@ -24,7 +24,6 @@ void setClaw(int speed);
 void setLifter(int speed);
 void setLifterSide(bool leftSide, int speed);
 //Determines whether a joystick movement is intentional
-
 bool isGreaterThanThreshold(int joyX, int joyY);
 //Manipulates the joystick values by applying them to the cubic curve
 // while still keeping them in range

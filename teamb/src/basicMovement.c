@@ -2,11 +2,13 @@
 
 
 void setSpeedLeft(int speedLeft) {
-  motorSet(MOTOR_L, speedLeft);
+  motorSet(MOTOR_DBL, -speedLeft);
+  motorSet(MOTOR_DFL, -speedLeft);
 }
 
 void setSpeedRight(int speedRight) {
-  motorSet(MOTOR_R, speedRight);
+  motorSet(MOTOR_DBR, -speedRight);
+  motorSet(MOTOR_DFR, -speedRight);
 }
 
 void setMotors(int speedLeft, int speedRight) {
@@ -15,34 +17,17 @@ void setMotors(int speedLeft, int speedRight) {
 }
 
 void setMobileLift(int speed) {
-  motorSet(MOTOR_MLL, speed);
   motorSet(MOTOR_MLR, speed);
-}
-
-void setCone(int speed) {
-  motorSet(MOTOR_CLAW, speed);
-}
-
-void setClaw(int speed) {
-  motorSet(MOTOR_CL, speed);
-}
-
-void setLifter(int speed) {
-  //sets scissor lifter speed, right side is mirrored
-  //left side is slower, so reduce the speed on the right side
-  motorSet(MOTOR_LFL, speed);
-  motorSet(MOTOR_LBL, speed);
-  motorSet(MOTOR_LFR, speed);
-  motorSet(MOTOR_LBR, speed);
+  motorSet(MOTOR_MLL, speed);
 }
 
 void setLifterSide(bool leftSide, int speed) {
   if (leftSide) {
-    motorSet(MOTOR_LFL, speed);
-    motorSet(MOTOR_LBL, speed);
+    motorSet(MOTOR_DFL, speed);
+    motorSet(MOTOR_DBL, speed);
   } else {
-    motorSet(MOTOR_LFR, speed);
-    motorSet(MOTOR_LBR, speed);
+    motorSet(MOTOR_DBR, -speed);
+    motorSet(MOTOR_DFR, -speed);
   }
 }
 
