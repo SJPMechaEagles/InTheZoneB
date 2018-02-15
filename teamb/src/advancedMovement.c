@@ -14,18 +14,6 @@ void moveSteps(int steps, int speed) {
   setMotors(0, 0);
 }
 
-/*void raiseLifter() {
-  while(getRawPot(LIFTER_POTENTIOMETER_R) >= 0) {
-    setLifter(MAX_DRIVE_SPEED);
-  }
-}
-
-void lowerLifter() {
-  while(getRawPot(LIFTER_POTENTIOMETER_R) >= 0) {
-    setLifter(-MAX_DRIVE_SPEED);
-  }
-} */
-
 void raiseMobileLift()
 {
   while (getRawPot(MOBILE_POTENTIOMETER) >= 1300) {
@@ -41,29 +29,30 @@ void lowerMobileLift()
 }
 
 void tankDrive(int speedLeft, int speedRight) {
-  setMotors(-speedLeft, speedRight);
+  setMotors(- 0.5 * speedLeft,  0.5 * speedRight);
 }
 
 void drive() {
   struct controller_values controller = getControllerValues();
-  if(!isGreaterThanThreshold(controller.stickLY, controller.stickLX) &&
-    !isGreaterThanThreshold(controller.stickRY, controller.stickRX)) {
+  struct controller_values remapped = remapControllerValues(controller);
+  if(!isGreaterThanThreshold(remapped.stickLY, remapped.stickLX) &&
+    !isGreaterThanThreshold(remapped.stickRY, remapped.stickRX)) {
     setMotors(0, 0);
     return;
   }
   //controller = remapControllerValues(controller);
 
-  tankDrive(controller.stickLY,controller.stickRY);
+  tankDrive(remapped.stickLY,remapped.stickRY);
 }
 //lifts the mobile goal intake with a potentiometer
 void mobileGoalLifterLoop(void * parameter) {
   while (1) {
     if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_UP)) {
-      raiseMobileLift();
+      setMobileLift(MAX_DRIVE_SPEED);
       mobileLifterIsRaised = true;
       driveMultiplier = 0.667;
     } else if (joystickGetDigital(MAIN_JOYSTICK, 6, JOY_DOWN)) {
-      lowerMobileLift();
+      setMobileLift(-MAX_DRIVE_SPEED);
       mobileLifterIsRaised = false;
       driveMultiplier = 0.333;
     } else {
@@ -111,7 +100,4 @@ void gyroTurn(int degrees, Gyro gyro, int minSpeed) {
 
   }
   setMotors(0, 0);
-}
-
-void autonomousTest(Gyro gyro) {
 }

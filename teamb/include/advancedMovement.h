@@ -8,7 +8,7 @@
 #include "controller.h"
 #include "math.h"
 
-#define MAX_DRIVE_SPEED 127
+#define MAX_DRIVE_SPEED 60
 #define GYRO_TURN_SPEED 60
 #define GYRO_TURN_SPEED_MIN 28
 #define GYRO_TURN_SPEED_MIN_FAST 40
