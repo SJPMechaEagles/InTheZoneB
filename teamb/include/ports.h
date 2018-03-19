@@ -12,8 +12,7 @@
 #define MOTOR_MLL 9
 
 #define IME_RIGHT_MOTOR 0
-#define IME_LEFT_MOTOR 1
-#define NUMBER_OF_IME 2
+#define NUMBER_OF_IME 1
 
 #define MOBILE_POTENTIOMETER 2
 #define GYRO_PORT 1

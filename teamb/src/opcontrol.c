@@ -18,15 +18,21 @@ void operatorControl()
 	if(mode == 0) {
 		startLoops();
 		while (1) {
-			/*int steps = 0;
-			steps = getEncoderSteps(IME_RIGHT_MOTOR);
-			printf("Encoder step: %d.\n", steps);*/
-			//printf("Mobile potentiometer  reading: %d\n", analogRead(MOBILE_POTENTIOMETER));
-			//printf("Gyroscope heading: %d.\n", gyroGet(gyro));
+			if(joystickGetDigital(MAIN_JOYSTICK, 8, JOY_UP)){
+				autonomousTest(gyro);
+			}
 			drive();
-			delay(200);
+			delay(100);
 		}
 		stopLoops();
-	} else if(mode == 1) {
+	}
+	else if(mode == 1) {
+		while(1){
+			int steps = 0;
+			steps = getEncoderSteps(IME_RIGHT_MOTOR);
+			printf("Encoder step: %d.\n", steps);
+			printf("Mobile potentiometer  reading: %d.\n", analogRead(MOBILE_POTENTIOMETER));
+			printf("Gyroscope heading: %d.\n", gyroGet(gyro));
+		}
 	}
 }

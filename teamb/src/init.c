@@ -47,7 +47,6 @@ void initialize() {
     if(IMECount != NUMBER_OF_IME){
         printf("Wrong Number of IMEs");
     }
-    imeReset(IME_LEFT_MOTOR);
     imeReset(IME_RIGHT_MOTOR);
     wait(2000);
 

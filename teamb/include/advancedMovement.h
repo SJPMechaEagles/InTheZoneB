@@ -19,6 +19,7 @@ void moveSteps(int steps, int speed);
 void raiseMobileLift();
 void lowerMobileLift();
 
+void pullMobileGoal();
 //Main drive code
 void drive();
 

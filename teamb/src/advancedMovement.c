@@ -6,10 +6,10 @@ static bool mobileLifterIsRaised = true;
 
 
 void moveSteps(int steps, int speed) {
-  int start = getEncoderSteps(IME_LEFT_MOTOR);
-  while (abs(getEncoderSteps(IME_LEFT_MOTOR) - start) < steps)
+  int start = getEncoderSteps(IME_RIGHT_MOTOR);
+  while (abs(getEncoderSteps(IME_RIGHT_MOTOR) - start) < steps)
   {
-    setMotors(speed, -speed);
+    setMotors(-speed, speed);
   }
   setMotors(0, 0);
 }
@@ -21,6 +21,16 @@ void raiseMobileLift()
   }
 }
 
+void pullMobileGoal()
+{
+  while(analogRead(MOBILE_POTENTIOMETER) < 3200)
+  {
+    setMotors(MAX_DRIVE_SPEED,-MAX_DRIVE_SPEED);
+    setMobileLift(-MAX_DRIVE_SPEED);
+    delay(200);
+  }
+}
+
 void lowerMobileLift()
 {
   while (getRawPot(MOBILE_POTENTIOMETER) <= 2800) {
@@ -29,7 +39,12 @@ void lowerMobileLift()
 }
 
 void tankDrive(int speedLeft, int speedRight) {
-  setMotors(- 0.5 * speedLeft,  0.5 * speedRight);
+  //if((abs(speedLeft) < 110 && abs(speedRight) > 110) || (abs(speedLeft) > 110 && abs(speedRight) < 110)){
+    //setMotors(-0.5 * speedLeft, 0.5 * speedRight);
+  //}
+  //else {
+  setMotors(-speedLeft, speedRight);
+  //}
 }
 
 void drive() {
@@ -55,7 +70,9 @@ void mobileGoalLifterLoop(void * parameter) {
       setMobileLift(-MAX_DRIVE_SPEED);
       mobileLifterIsRaised = false;
       driveMultiplier = 0.333;
-    } else {
+    } /* else if (joystickGetDigital(MAIN_JOYSTICK, 8, JOY_LEFT)){
+      pullMobileGoal();
+    } */ else {
       setMobileLift(0);
     }
     delay(30);
@@ -100,4 +117,9 @@ void gyroTurn(int degrees, Gyro gyro, int minSpeed) {
 
   }
   setMotors(0, 0);
+}
+
+void autonomousTest(Gyro gyro){
+  moveSteps(337.5, 127);
+  
 }
